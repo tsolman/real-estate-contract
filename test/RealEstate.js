@@ -111,6 +111,36 @@ describe('RealEstate', () => {
 
             expect(balance).to.be.above(ether(10099))
         })
+
+        it('executes a unsuccessful transaction. Inspection NOT approved', async () => {
+            //Sellers has to be owher of the NFT
+            expect(await realEstate.ownerOf(nftID)).to.equal(seller.address)
+
+            //Check escrow balance
+            balance = await escrow.getBalance()
+            console.log("escrow balance before deposit", ethers.utils.formatEther(balance))
+
+            //Buyer deposits earnest amount
+            transaction = await escrow.connect(buyer).depositEarnest({ value: ether(20) })
+            await transaction.wait()
+
+            //Check escrow balance
+            balance = await escrow.getBalance()
+            console.log("escrow balance", ethers.utils.formatEther(balance))
+
+            //inspector update status
+            transaction = await escrow.connect(inspector).updateInspectionStatus(false)
+            await transaction.wait()
+            console.log("Inspector updates status")
+
+            transaction = await escrow.cancelSale()
+            await transaction.wait()
+            console.log("Sale cancelled")
+
+            //Check escrow balance
+            balance = await escrow.getBalance()
+            console.log("escrow balance", ethers.utils.formatEther(balance))
+        })
     })
 
 })

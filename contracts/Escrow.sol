@@ -77,6 +77,16 @@ contract Escrow {
         return address(this).balance;
     }
 
+    //Cancel sale. handle earnest deposit
+    //If inspection is not approved, then refund.
+    function cancelSale() public {
+        if(!inspectionPassed){
+            require(address(this).balance >= escrowAmount, "Insufficient funds to refund buyer.");
+            (bool success, ) = payable(buyer).call{ value: address(this).balance}("");   
+            require(success);
+        }
+    }
+
     function finalizeSale() public {
         require(inspectionPassed, "Inspector needs to sign off");
         require(approval[buyer],"Must be approved by buyer");
