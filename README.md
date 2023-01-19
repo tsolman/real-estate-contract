@@ -1,11 +1,12 @@
-# Sample Hardhat Project
+# Real estate NFT sale Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This project demonstrates an example of a real estate sale happening in the blockchain.
+
 
 Try running some of the following tasks:
 
 ```shell
-npx hardhat help
+To test run 
 npx hardhat test
 REPORT_GAS=true npx hardhat test
 npx hardhat node
